@@ -1,49 +1,51 @@
-package com.example.gtcapp.ui.theme
+package com.example.gtcapp
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.gtcapp.ui.screens.LoginScreen
+import com.example.gtcapp.ui.theme.GTCAppTheme
 
-@Composable
-fun GTCAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false, // Desactivamos para usar nuestros colores personalizados
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            GTCAppTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    LoginScreen(
+                        onLoginClick = {
+                            // Aquí se navega a la pantalla principal
+                            // Por ahora solo un mensaje de log
+                            println("Login clicked")
+                        },
+                        onForgotPasswordClick = {
+                            // Pantalla de recuperación
+                            println("Forgot password clicked")
+                        },
+                        onBiometricClick = {
+                            // Autenticación biométrica
+                            println("Biometric login clicked")
+                        },
+                        onFaceClick = {
+                            // Reconocimiento facial
+                            println("Face login clicked")
+                        },
+                        onQRPaymentClick = {
+                            // Navegación a pagos QR
+                            println("QR Payment clicked")
+                        }
+                    )
+                }
+            }
         }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
     }
-    
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
-    }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
 }
