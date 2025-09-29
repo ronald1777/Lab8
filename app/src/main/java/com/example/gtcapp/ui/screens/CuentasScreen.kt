@@ -34,7 +34,7 @@ data class Account(
 fun BankApp() {
     Scaffold(
         topBar = { TopBar() },
-        bottomBar = { BottomNavigationBar() }
+        bottomBar = { NavigationButtonBar() }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -133,42 +133,6 @@ fun QuickActionButton(text: String, icon: androidx.compose.ui.graphics.vector.Im
         Icon(icon, contentDescription = text, tint = Color.White)
         Spacer(modifier = Modifier.width(8.dp))
         Text(text, color = Color.White)
-    }
-}
-
-@Composable
-fun BottomNavigationBar() {
-    NavigationBar {
-        NavigationBarItem(
-            selected = true,
-            onClick = {},
-            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
-            label = { Text("Inicio") }
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.Payments, contentDescription = "Pagos") },
-            label = { Text("Pagos") }
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.SwapHoriz, contentDescription = "Transferir") },
-            label = { Text("Transferir") }
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.Savings, contentDescription = "Ahorros") },
-            label = { Text("Ahorros") }
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.MoreHoriz, contentDescription = "Más") },
-            label = { Text("Más") }
-        )
     }
 }
 
