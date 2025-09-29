@@ -130,7 +130,7 @@ fun PagoCard(titulo: String, subtitulo: String, icon: ImageVector) {
 fun PaymentsScreenPreview() {
     GTCAppTheme {
         PaymentsScreen(
-            selectedPaymentTab = "Tarjetas",
+            selectedPaymentTab = "Servicios",
             onTabChange = {},
             onNavigateToHome = {},
             onNavigateToPayments = {},
