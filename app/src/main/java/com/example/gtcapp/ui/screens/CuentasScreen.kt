@@ -34,7 +34,7 @@ data class Account(
 fun BankApp() {
     Scaffold(
         topBar = { TopBar() },
-        bottomBar = { NavigationButtonBar() }
+        bottomBar = { }
     ) { padding ->
         Column(
             modifier = Modifier
