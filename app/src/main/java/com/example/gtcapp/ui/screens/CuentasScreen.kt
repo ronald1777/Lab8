@@ -35,6 +35,7 @@ data class Account(
 fun BankApp(
     onNavigateToTransfer : ()-> Unit,
     onNavigateToPayments : ()-> Unit,
+    onNavigateToSavings : ()-> Unit,
     onAccountClick: (Account) -> Unit = {}
 
 ) {
@@ -45,7 +46,7 @@ fun BankApp(
             onNavigateToTransfers = onNavigateToTransfer,
             onNavigateToHome = {},
             onNavigateToPayments = onNavigateToPayments,
-            onNavigateToSavings = {},
+            onNavigateToSavings = onNavigateToSavings,
             onNavigateToMore = {}
         ) }
     ) { padding ->
@@ -168,6 +169,7 @@ fun PreviewBankApp() {
     BankApp(
         onNavigateToTransfer = {},
         onNavigateToPayments = {},
-        onAccountClick = {}
+        onAccountClick = {},
+        onNavigateToSavings = {}
     )
 }

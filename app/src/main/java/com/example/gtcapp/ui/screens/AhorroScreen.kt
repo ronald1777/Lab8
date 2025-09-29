@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gtcapp.navigation.BottomNavigationBar
 
 data class Ahorro(
     val nombre: String,
@@ -26,7 +27,13 @@ data class Ahorro(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AhorrosScreen(onBack: () -> Unit) {
+fun AhorrosScreen(
+                  onNavigateToHome: () -> Unit = {},
+                  onNavigateToTransfers: () -> Unit = {},
+                  onNavigateToSavings: () -> Unit = {},
+                  onNavigateToMore: () -> Unit = {},
+                  onNavigateToPayments: () -> Unit = {}
+) {
     val listaAhorros = listOf(
         Ahorro("Ahorro Programado", "Cuenta de Ahorro", "Q 1,234.56"),
         Ahorro("Ahorro Flexible", "Cuenta de Ahorro", "Q 7,890.12"),
@@ -38,38 +45,14 @@ fun AhorrosScreen(onBack: () -> Unit) {
 //
         },
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
-                    label = { Text("Inicio") },
-                    selected = false,
-                    onClick = { /* Navegar a Inicio */ }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.CreditCard, contentDescription = "Pagos") },
-                    label = { Text("Pagos") },
-                    selected = false,
-                    onClick = { /* Navegar a Pagos */ }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Send, contentDescription = "Transferencias") },
-                    label = { Text("Transferencias") },
-                    selected = false,
-                    onClick = { /* Navegar a Transferencias */ }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Savings, contentDescription = "Ahorros") },
-                    label = { Text("Ahorros") },
-                    selected = true,
-                    onClick = { /* Ya estás en Ahorros */ }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.MoreHoriz, contentDescription = "Más") },
-                    label = { Text("Más") },
-                    selected = false,
-                    onClick = { /* Navegar a Más */ }
-                )
-            }
+            BottomNavigationBar(
+                selectedItem = "Ahorros",
+                onNavigateToHome = onNavigateToHome,
+                onNavigateToTransfers = onNavigateToTransfers,
+                onNavigateToSavings = onNavigateToSavings,
+                onNavigateToMore = onNavigateToMore,
+                onNavigateToPayments = onNavigateToPayments
+            )
         }
     ) { innerPadding ->
         LazyColumn(
@@ -114,5 +97,5 @@ fun AhorrosScreen(onBack: () -> Unit) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewAhorrosScreen() {
-    AhorrosScreen(onBack = {})
+    AhorrosScreen(onNavigateToHome = {}, onNavigateToTransfers = {}, onNavigateToSavings = {}, onNavigateToMore = {}, onNavigateToPayments = {})
 }
