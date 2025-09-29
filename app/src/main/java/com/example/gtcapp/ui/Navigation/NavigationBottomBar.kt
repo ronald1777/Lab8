@@ -9,6 +9,11 @@ import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 
+private const val TAB_HOME = "Inicio"
+private const val TAB_PAGOS = "Pagos"
+private const val TAB_TRANSFER = "Transferir"
+private const val TAB_AHORROS = "Ahorros"
+private const val TAB_MAS = "Más"
 
 @Composable
 fun BottomNavigationBar(
@@ -21,34 +26,34 @@ fun BottomNavigationBar(
 ) {
     NavigationBar {
         NavigationBarItem(
-            selected = true,
-            onClick = {},
-            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
-            label = { Text("Inicio") }
+            selected = selectedItem == TAB_HOME,
+            onClick = onNavigateToHome,
+            icon = { Icon(Icons.Default.Home, contentDescription = TAB_HOME) },
+            label = { Text(TAB_HOME) }
         )
         NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.Payments, contentDescription = selectedItem) },
-            label = { Text(selectedItem) }
+            selected = selectedItem == TAB_PAGOS,
+            onClick = onNavigateToPayments,
+            icon = { Icon(Icons.Default.Payments, contentDescription = TAB_PAGOS) },
+            label = { Text(TAB_PAGOS) }
         )
         NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.SwapHoriz, contentDescription = "Transferir") },
-            label = { Text("Transferir") }
+            selected = selectedItem == TAB_TRANSFER,
+            onClick = onNavigateToTransfers,
+            icon = { Icon(Icons.Default.SwapHoriz, contentDescription = TAB_TRANSFER) },
+            label = { Text(TAB_TRANSFER) }
         )
         NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.Savings, contentDescription = "Ahorros") },
-            label = { Text("Ahorros") }
+            selected = selectedItem == TAB_AHORROS,
+            onClick = onNavigateToSavings,
+            icon = { Icon(Icons.Default.Savings, contentDescription = TAB_AHORROS) },
+            label = { Text(TAB_AHORROS) }
         )
         NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = { Icon(Icons.Default.MoreHoriz, contentDescription = "Más") },
-            label = { Text("Más") }
+            selected = selectedItem == TAB_MAS,
+            onClick = onNavigateToMore,
+            icon = { Icon(Icons.Default.MoreHoriz, contentDescription = TAB_MAS) },
+            label = { Text(TAB_MAS) }
         )
     }
 }

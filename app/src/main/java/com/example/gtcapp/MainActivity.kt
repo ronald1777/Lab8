@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.gtcapp.ui.Navigation.AppNavigation
 import com.example.gtcapp.ui.screens.LoginScreen
 import com.example.gtcapp.ui.theme.GTCAppTheme
 
@@ -21,25 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GTCAppTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    LoginScreen(
-                        onLoginClick = {
-                            println("Login clicked")
-                        },
-                        onForgotPasswordClick = {
-                            println("Forgot password clicked")
-                        },
-                        onBiometricClick = {
-                            println("Biometric login clicked")
-                        },
-                        onFaceClick = {
-                            println("Face login clicked")
-                        },
-                        onQRPaymentClick = {
-                            println("QR Payment clicked")
-                        }
-                    )
-                }
+                AppNavigation()
             }
         }
     }

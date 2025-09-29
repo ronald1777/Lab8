@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gtcapp.navigation.BottomNavigationBar
 
 // MODELO DE DATOS
 data class Account(
@@ -31,10 +32,22 @@ data class Account(
 )
 
 @Composable
-fun BankApp() {
+fun BankApp(
+    onNavigateToTransfer : ()-> Unit,
+    onNavigateToPayments : ()-> Unit,
+    onAccountClick: (Account) -> Unit = {}
+
+) {
     Scaffold(
         topBar = { TopBar() },
-        bottomBar = { }
+        bottomBar = { BottomNavigationBar(
+            selectedItem = "Inicio",
+            onNavigateToTransfers = onNavigateToTransfer,
+            onNavigateToHome = {},
+            onNavigateToPayments = onNavigateToPayments,
+            onNavigateToSavings = {},
+            onNavigateToMore = {}
+        ) }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -50,10 +63,12 @@ fun BankApp() {
 
             // Lista de cuentas
             AccountCard(
-                account = Account("Q 12,345.67", "Cuenta de Ahorros", android.R.drawable.ic_menu_mylocation)
+                account = Account("Q 12,345.67", "Cuenta de Ahorros", android.R.drawable.ic_menu_mylocation),
+                    onClick = onAccountClick
             )
             AccountCard(
-                account = Account("Q 8,765.43", "Cuenta Monetaria", android.R.drawable.ic_menu_agenda)
+                account = Account("Q 8,765.43", "Cuenta Monetaria", android.R.drawable.ic_menu_agenda),
+                    onClick = onAccountClick
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -65,8 +80,14 @@ fun BankApp() {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                QuickActionButton("Transferir", Icons.Default.SwapHoriz)
-                QuickActionButton("Pagar", Icons.Default.Payments)
+                QuickActionButton("Transferir",
+                    Icons.Default.SwapHoriz,
+                    onClick = onNavigateToTransfer
+                )
+                QuickActionButton(
+                    "Pagar",
+                    Icons.Default.Payments,
+                    onClick = onNavigateToPayments)
             }
         }
     }
@@ -88,13 +109,15 @@ fun TopBar() {
 }
 
 @Composable
-fun AccountCard(account: Account) {
+fun AccountCard(account: Account,
+                onClick: (Account) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        onClick= {onClick(account)}
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -122,9 +145,12 @@ fun AccountCard(account: Account) {
 }
 
 @Composable
-fun QuickActionButton(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
+fun QuickActionButton(
+    text: String,
+                      icon: androidx.compose.ui.graphics.vector.ImageVector,
+onClick: () -> Unit) {
     Button(
-        onClick = { /* acción */ },
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2)),
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
@@ -139,5 +165,9 @@ fun QuickActionButton(text: String, icon: androidx.compose.ui.graphics.vector.Im
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewBankApp() {
-    BankApp()
+    BankApp(
+        onNavigateToTransfer = {},
+        onNavigateToPayments = {},
+        onAccountClick = {}
+    )
 }

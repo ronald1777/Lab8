@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,15 +22,15 @@ import com.example.gtcapp.ui.theme.GTCAppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentsScreen(
-    selectedPaymentTab: String,
-    onTabChange: (String) -> Unit,
     onNavigateToHome: () -> Unit,
-    onNavigateToPayments: () -> Unit,
     onNavigateToTransfers: () -> Unit,
     onNavigateToSavings: () -> Unit,
-    onNavigateToMore: () -> Unit
+    onNavigateToMore: () -> Unit={},
+    onNavigateToPayments: () -> Unit={}
 ) {
     val tabs = listOf("Servicios", "Tarjetas", "Préstamos")
+    var selectedTab by rememberSaveable{mutableStateOf(tabs.first())}
+    val selectedIndex = tabs.indexOf(selectedTab).let { if (it >= 0) it else 0}
 
     Scaffold(
         topBar = {
@@ -41,20 +42,20 @@ fun PaymentsScreen(
             BottomNavigationBar(
                 selectedItem = "Pagos",
                 onNavigateToHome = onNavigateToHome,
-                onNavigateToPayments = onNavigateToPayments,
                 onNavigateToTransfers = onNavigateToTransfers,
                 onNavigateToSavings = onNavigateToSavings,
-                onNavigateToMore = onNavigateToMore
+                onNavigateToMore = onNavigateToMore,
+                onNavigateToPayments = onNavigateToPayments
             )
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             // Tabs
-            TabRow(selectedTabIndex = tabs.indexOf(selectedPaymentTab)) {
+            TabRow(selectedTabIndex = selectedIndex) {
                 tabs.forEach { title ->
                     Tab(
-                        selected = selectedPaymentTab == title,
-                        onClick = { onTabChange(title) },
+                        selected = selectedTab == title,
+                        onClick = { selectedTab = title },
                         text = { Text(title) }
                     )
                 }
@@ -71,7 +72,7 @@ fun PaymentsScreen(
                     Text("Mis pagos", style = MaterialTheme.typography.titleMedium)
                 }
 
-                when (selectedPaymentTab) {
+                when (selectedTab) {
                     "Servicios" -> {
                         item { PagoCard("Agua", "Pago de servicio de agua", Icons.Default.Payment) }
                         item { PagoCard("Luz", "Pago de energía eléctrica", Icons.Default.Payment) }
@@ -130,12 +131,9 @@ fun PagoCard(titulo: String, subtitulo: String, icon: ImageVector) {
 fun PaymentsScreenPreview() {
     GTCAppTheme {
         PaymentsScreen(
-            selectedPaymentTab = "Servicios",
-            onTabChange = {},
             onNavigateToHome = {},
-            onNavigateToPayments = {},
             onNavigateToTransfers = {},
             onNavigateToSavings = {},
-            onNavigateToMore = {})
+            )
     }
 }

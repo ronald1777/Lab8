@@ -24,6 +24,7 @@ data class Ahorro(
     val monto: String
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AhorrosScreen(onBack: () -> Unit) {
     val listaAhorros = listOf(
