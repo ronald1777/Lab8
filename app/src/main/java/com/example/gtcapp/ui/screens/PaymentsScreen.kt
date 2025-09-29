@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material3.*
@@ -16,40 +15,52 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gtcapp.navigation.BottomNavigationBar
 import com.example.gtcapp.ui.theme.GTCAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentsScreen() {
+fun PaymentsScreen(
+    selectedPaymentTab: String,
+    onTabChange: (String) -> Unit,
+    onNavigateToHome: () -> Unit,
+    onNavigateToPayments: () -> Unit,
+    onNavigateToTransfers: () -> Unit,
+    onNavigateToSavings: () -> Unit,
+    onNavigateToMore: () -> Unit
+) {
     val tabs = listOf("Servicios", "Tarjetas", "Préstamos")
-    var selectedTab by remember { mutableStateOf(0) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Pagos") },
-                navigationIcon = {
-                    IconButton(onClick = { /* Acción volver */ }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
-                    }
-                }
+                title = { Text("Pagos") }
             )
         },
-
+        bottomBar = {
+            BottomNavigationBar(
+                selectedItem = "Pagos",
+                onNavigateToHome = onNavigateToHome,
+                onNavigateToPayments = onNavigateToPayments,
+                onNavigateToTransfers = onNavigateToTransfers,
+                onNavigateToSavings = onNavigateToSavings,
+                onNavigateToMore = onNavigateToMore
+            )
+        }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             // Tabs
-            TabRow(selectedTabIndex = selectedTab) {
-                tabs.forEachIndexed { index, title ->
+            TabRow(selectedTabIndex = tabs.indexOf(selectedPaymentTab)) {
+                tabs.forEach { title ->
                     Tab(
-                        selected = selectedTab == index,
-                        onClick = { selectedTab = index },
+                        selected = selectedPaymentTab == title,
+                        onClick = { onTabChange(title) },
                         text = { Text(title) }
                     )
                 }
             }
 
-            // Contenido
+            // Contenido dinámico según tab
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -60,14 +71,22 @@ fun PaymentsScreen() {
                     Text("Mis pagos", style = MaterialTheme.typography.titleMedium)
                 }
 
-                item {
-                    PagoCard("Servicios", "Agua, luz, teléfono", Icons.Default.Payment)
-                }
-                item {
-                    PagoCard("Tarjetas", "Tarjetas de crédito", Icons.Default.Payment)
-                }
-                item {
-                    PagoCard("Préstamos", "Préstamos", Icons.Default.Payment)
+                when (selectedPaymentTab) {
+                    "Servicios" -> {
+                        item { PagoCard("Agua", "Pago de servicio de agua", Icons.Default.Payment) }
+                        item { PagoCard("Luz", "Pago de energía eléctrica", Icons.Default.Payment) }
+                        item { PagoCard("Teléfono", "Pago de telefonía", Icons.Default.Payment) }
+                    }
+
+                    "Tarjetas" -> {
+                        item { PagoCard("Visa ****1234", "Tarjeta de crédito", Icons.Default.Payment) }
+                        item { PagoCard("Mastercard ****5678", "Tarjeta de débito", Icons.Default.Payment) }
+                    }
+
+                    "Préstamos" -> {
+                        item { PagoCard("Préstamo personal", "Saldo pendiente Q5,000", Icons.Default.Payment) }
+                        item { PagoCard("Préstamo vehicular", "Saldo pendiente Q30,000", Icons.Default.Payment) }
+                    }
                 }
 
                 item {
@@ -75,12 +94,8 @@ fun PaymentsScreen() {
                     Text("Otros", style = MaterialTheme.typography.titleMedium)
                 }
 
-                item {
-                    PagoCard("Agregar pago", "", Icons.Default.Add)
-                }
-                item {
-                    PagoCard("Historial de pagos", "", Icons.Default.MoreHoriz)
-                }
+                item { PagoCard("Agregar pago", "", Icons.Default.Add) }
+                item { PagoCard("Historial de pagos", "", Icons.Default.MoreHoriz) }
             }
         }
     }
@@ -114,6 +129,13 @@ fun PagoCard(titulo: String, subtitulo: String, icon: ImageVector) {
 @Composable
 fun PaymentsScreenPreview() {
     GTCAppTheme {
-        PaymentsScreen()
+        PaymentsScreen(
+            selectedPaymentTab = "Tarjetas",
+            onTabChange = {},
+            onNavigateToHome = {},
+            onNavigateToPayments = {},
+            onNavigateToTransfers = {},
+            onNavigateToSavings = {},
+            onNavigateToMore = {})
     }
 }
